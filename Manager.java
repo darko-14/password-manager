@@ -2,15 +2,16 @@ import java.util.Scanner;
 
 public class Manager {
     
-    String username;
-    String masterPassword;
+    static String username;
+    static String masterPassword;
 
-    Database db = new Database();
-    User u = new User(username, masterPassword);
+    static final Database db = new Database();
+    static final User u = new User(username, masterPassword);
+    
     
     public static void main(String[] args) {
-        
-        showFistMenu();
+        //showFistMenu();
+        Database.connection();
 
     }
 
@@ -53,13 +54,11 @@ public class Manager {
                     String newUsername = sc.next();
                     System.out.println("Enter your master password");
                     String newMasterPassword = sc.next();   
-                    System.out.println("Register successfull!");
                     System.out.println(newUsername +" "+ newMasterPassword);
+                    User u = new User (newUsername, newMasterPassword);
+                    db.register(u);
+                    System.out.println("Register successfull!");
                     showFistMenu();
-                    // input > 0
-                    // Register
-                    // User registrated. Login
-                    // showFirstMenu()
                 } catch (Exception e) {
                     // Register failed. Try again
                 }

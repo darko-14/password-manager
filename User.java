@@ -10,6 +10,7 @@ public class User {
     public User(String username, String mPass){
         this.username = username;
         this.mPass = mPass;
+        
     }
 
     

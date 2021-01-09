@@ -10,8 +10,8 @@ public class Manager {
     
     
     public static void main(String[] args) {
-        //showFistMenu();
-        Database.connection();
+        showFistMenu();
+        //Database.connection();
 
     }
 

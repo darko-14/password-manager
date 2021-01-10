@@ -54,22 +54,21 @@ public class Manager {
                     String newUsername = sc.next();
                     System.out.println("Enter your master password");
                     String newMasterPassword = sc.next();   
-                    System.out.println(newUsername +" "+ newMasterPassword);
                     User u = new User (newUsername, newMasterPassword);
-                    db.register(u);
-                    System.out.println("Register successfull!");
-                    showFistMenu();
+
+                    if(newUsername.length() > 2 && newMasterPassword.length() > 3){
+                        db.register(u);
+                        //showFistMenu();
+                    }else{
+                        System.out.println("Choose longer username & password");
+                    }
                 } catch (Exception e) {
-                    // Register failed. Try again
+                    e.printStackTrace();
                 }
-                
                 break;
-        
             default:
                 System.out.println("Enter a valid option");
                 break;
-
-            
         }
         sc.close();
     }

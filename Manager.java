@@ -35,14 +35,13 @@ public class Manager {
                     String username = sc.next();
                     System.out.println("Enter your master password");
                     String masterPassword = sc.next();
-                    System.out.println(username +" "+ masterPassword);
+
+                    db.login(username, masterPassword);
                     showMainMenu();
                 
-                    // input > 0
-                    // Login
-                    // showMainMenu()
+                    
                 } catch (Exception e) {
-                    // Login failed. Try again
+                    e.printStackTrace();
                 }
                 
                 break;
@@ -159,6 +158,7 @@ public class Manager {
                 System.out.println("Enter a valid option");
                 break;
         }
+        sc.close();
     }
 
 }

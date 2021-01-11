@@ -29,15 +29,21 @@ public class Manager {
         switch (choice) {
             case 1:
                try {
-                    System.out.println("Login menu:");
+                    System.out.println("----------------");
+                    System.out.println("Login:");
                     System.out.println("----------------");
                     System.out.println("Enter your username");
                     String username = sc.next();
                     System.out.println("Enter your master password");
                     String masterPassword = sc.next();
 
-                    db.login(username, masterPassword);
-                    showMainMenu();
+                    if (db.login(username, masterPassword)) {
+                        System.out.println("\n");
+                        System.out.println("Welcome - "+username+" -");                        
+                        showMainMenu();
+                    }else{
+                        System.out.println("Wrong username or password. Try again.");
+                    }
                 
                     
                 } catch (Exception e) {
@@ -47,7 +53,8 @@ public class Manager {
                 break;
             case 2:
                 try {
-                    System.out.println("Register menu:");
+                    System.out.println("----------------");
+                    System.out.println("Register:");
                     System.out.println("----------------");
                     System.out.println("Enter your username");
                     String newUsername = sc.next();
@@ -57,7 +64,6 @@ public class Manager {
 
                     if(newUsername.length() > 2 && newMasterPassword.length() > 3){
                         db.register(u);
-                        //showFistMenu();
                     }else{
                         System.out.println("Choose longer username & password");
                     }
@@ -77,7 +83,7 @@ public class Manager {
         //System.out.println("Saved passwords for - "+ u.getUsername() + " - ");
         // showPasswords()
         System.out.println("-------------");
-        System.out.println("- menu -");
+        System.out.println("** Menu **");
         System.out.println("1. Add new password");
         System.out.println("2. Edit password (id)");
         System.out.println("3. Delete password (id)");

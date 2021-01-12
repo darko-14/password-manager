@@ -3,14 +3,41 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class Database{
-    public static void addNewUser() {
-    }
+    /* 
+    1. Create a database manually in MySQL Workbench
+    2. Create a table for the users 
+    create table password_database.users (id int unsigned auto_increment not null,username varchar(50) not null unique,
+    mPassword varchar(500) not null, createdAt timestamp default now(), primary key (id));
+    3. Create a table for the saved passwords
+    create table password_database.passwords (id int unsigned auto_increment not null,username varchar(50) not null unique,
+    adress varchar(100) not null unique,password varchar(500) not null,createdAt timestamp default now(),primary key (id),
+    foreign key (username) references users (username));
+    */
 
-    public static void addNewPassword() {
+
+    public void addNewPassword(String u, String a, String p) {
+
+        //String hpw = AESencrypt(p);
+        String query = "INSERT INTO password_database.passwords (username, adress, password) VALUES ('" + u + "','"+ a + "','"+ p +"')";
+
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.execute();
+
+            System.out.println("Password added successfully!");
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    
 
     public static void editPassword() {
+
     }
+    public static void showPasswords(){}
 
     public static void deletePassword() {
     }
@@ -65,10 +92,9 @@ public class Database{
         }
     }
 
-    public static void changeMasterPassword() {
-    }
-
-    public static void logout() {
+    public void changeMasterPassword(String u, String oldPass, String newPass) {
+        // check user, hash old pass -> check old pass
+        // hash new pass -> change old with new pass
     }
 
     public String hashPassword(String pw) throws NoSuchAlgorithmException {
@@ -90,6 +116,6 @@ public class Database{
         return hashedPassword;
     }
   
-    public static void showPasswords(){}
+   
 
 }

@@ -2,20 +2,20 @@ import java.util.Scanner;
 
 public class Manager {
     
-    static String username;
+    static String user;
     static String masterPassword;
 
     static final Database db = new Database();
-    static final User u = new User(username, masterPassword);
+   // static final User u = new User(username, masterPassword);
     
     
     public static void main(String[] args) {
-        showFistMenu();
+        showFirstMenu();
         //Database.connection();
 
     }
 
-    public static void showFistMenu(){
+    public static void showFirstMenu(){
         
         Scanner sc = new Scanner(System.in);
         System.out.println("----------------");
@@ -39,7 +39,8 @@ public class Manager {
 
                     if (db.login(username, masterPassword)) {
                         System.out.println("\n");
-                        System.out.println("Welcome - "+username+" -");                        
+                        System.out.println("Welcome - "+username+" -");         
+                        user = username;               
                         showMainMenu();
                     }else{
                         System.out.println("Wrong username or password. Try again.");
@@ -85,10 +86,11 @@ public class Manager {
         System.out.println("-------------");
         System.out.println("** Menu **");
         System.out.println("1. Add new password");
-        System.out.println("2. Edit password (id)");
-        System.out.println("3. Delete password (id)");
-        System.out.println("4. Change your Master Password");
-        System.out.println("5. Logout");
+        System.out.println("2. Reveal password (id)");
+        System.out.println("3. Edit password (id)");
+        System.out.println("4. Delete password (id)");
+        System.out.println("5. Change your Master Password");
+        System.out.println("6. Logout");
 
         int choice = sc.nextInt();
 
@@ -103,13 +105,24 @@ public class Manager {
                     String password = sc.next();   
                     System.out.println("Added successfull!");
                     System.out.println(adress +" "+ password);
-                    //addNewPassword()
-                    //showMainMenu()
+                    db.addNewPassword(user, adress, password);
+                    showMainMenu();
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    e.printStackTrace();
                 }
                 break;
             case 2:
+                try {
+                    System.out.println("Reveal password: ");
+                    System.out.println("----------------");
+                    System.out.println("Enter id");
+                    String id = sc.next();
+                    // Show raw password of that id
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 3:
                 try {
                     System.out.println("Edit password:");
                     System.out.println("----------------");
@@ -120,10 +133,10 @@ public class Manager {
                     //editPassword()
                     //showMainMenu()
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    e.printStackTrace();
                 }
                 break;
-            case 3:
+            case 4:
                 try {
                     System.out.println("Delete password:");
                     System.out.println("----------------");
@@ -132,10 +145,10 @@ public class Manager {
                     //deletePassword(id)
                     //showMainMenu()
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    e.printStackTrace();
                 }
                 break;
-            case 4:
+            case 5:
                 try {
                     System.out.println("Change your master password:");
                     System.out.println("----------------");
@@ -143,20 +156,18 @@ public class Manager {
                     String oldmp = sc.next();
                     System.out.println("Enter your new master password");
                     String newmp = sc.next();
-                    System.out.println("Enter again your new master password");
-                    String newmp2 = sc.next();
-                    //changeMasterPassword()
+                    db.changeMasterPassword(user, oldmp, newmp);
                     //showMainMenu()
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    e.printStackTrace();
                 }
                 break;
-            case 5:
+            case 6:
                 try {
-                    //logout()
-                    //showMainMenu()
+                    user = null;
+                    showFirstMenu();
                 } catch (Exception e) {
-                    //TODO: handle exception
+                    e.printStackTrace();
                 }
                 break;
         

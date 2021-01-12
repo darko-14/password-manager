@@ -19,6 +19,8 @@ public class Manager {
         
         Scanner sc = new Scanner(System.in);
         System.out.println("----------------");
+        System.out.println("Password Manager");
+        System.out.println("----------------");
         System.out.println("Choose an option");
         System.out.println("1. Login");
         System.out.println("2. Register");
@@ -81,8 +83,7 @@ public class Manager {
 
     public static void showMainMenu(){
         Scanner sc = new Scanner(System.in);
-        //System.out.println("Saved passwords for - "+ u.getUsername() + " - ");
-        // showPasswords()
+        db.showPasswords(user);
         System.out.println("-------------");
         System.out.println("** Menu **");
         System.out.println("1. Add new password");
@@ -117,7 +118,8 @@ public class Manager {
                     System.out.println("----------------");
                     System.out.println("Enter id");
                     String id = sc.next();
-                    // Show raw password of that id
+                    System.out.println(db.revealPassword(user, id));
+                    showMainMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -131,7 +133,7 @@ public class Manager {
                     System.out.println("Enter new password or hit Enter to continue");
                     String newPassword = sc.next(); 
                     //editPassword()
-                    //showMainMenu()
+                    showMainMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -142,8 +144,8 @@ public class Manager {
                     System.out.println("----------------");
                     System.out.println("Enter id");
                     String id = sc.next();
-                    //deletePassword(id)
-                    //showMainMenu()
+                    db.deletePassword(user, id);
+                    showMainMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

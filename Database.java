@@ -14,11 +14,14 @@ public class Database{
     foreign key (username) references users (username));
     */
 
+    final String secretKey = "secretkey";
 
+    AES aes = new AES();
     public void addNewPassword(String u, String a, String p) {
 
-        //String hpw = AESencrypt(p);
-        String query = "INSERT INTO password_database.passwords (username, adress, password) VALUES ('" + u + "','"+ a + "','"+ p +"')";
+        String hpw = AES.encrypt(p, secretKey);
+        
+        String query = "INSERT INTO password_database.passwords (username, adress, password) VALUES ('" + u + "','"+ a + "','"+ hpw +"')";
 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
@@ -32,14 +35,60 @@ public class Database{
             e.printStackTrace();
         }
     }
-    
+    public String revealPassword(String username, String id){
+        String decryptedPass = null; 
+        String query = "SELECT * FROM password_database.passwords WHERE username = '"+username+"' AND id = " +id+";";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
+            Statement st = con.createStatement();  
+            ResultSet rs = st.executeQuery(query); 
+            while(rs.next()){
+                String pasq = rs.getString(4);
+                decryptedPass = AES.decrypt(pasq, secretKey);
+              }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return decryptedPass;
+    }
 
     public static void editPassword() {
 
     }
-    public static void showPasswords(){}
+    public void showPasswords(String username){
+        String query = "SELECT * FROM password_database.passwords WHERE username = '"+username+"';";
 
-    public static void deletePassword() {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
+            Statement st = con.createStatement();  
+            ResultSet rs = st.executeQuery(query);  
+            System.out.println("-------------");
+            System.out.println("Saved Passwords");
+            while(rs.next()){
+                
+                System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+" "+rs.getString(5));
+                
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePassword(String username, String id) {
+        String query = "DELETE FROM password_database.passwords WHERE username = '"+username+"' AND id = " +id+";";
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.execute();
+            con.close();
+            System.out.println("Deleted!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
    
     public boolean login(String u, String pw) throws NoSuchAlgorithmException {

@@ -141,9 +141,29 @@ public class Database{
         }
     }
 
-    public void changeMasterPassword(String u, String oldPass, String newPass) {
-        // check user, hash old pass -> check old pass
-        // hash new pass -> change old with new pass
+    public boolean changeMasterPassword(String username, String oldPass, String newPass)
+            throws NoSuchAlgorithmException {
+
+        String oldhpw = hashPassword(oldPass);
+        String newhpw = hashPassword(newPass);
+        String query = "UPDATE password_database.users SET mPassword = '"+newhpw+"' WHERE mPassword = '" +oldhpw+"';" ;
+               
+        System.out.println(oldhpw);
+        System.out.println(newhpw);
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
+            PreparedStatement st = con.prepareStatement(query);
+            st.executeUpdate();  
+            
+            con.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+       
     }
 
     public String hashPassword(String pw) throws NoSuchAlgorithmException {

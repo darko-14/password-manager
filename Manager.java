@@ -6,12 +6,10 @@ public class Manager {
     static String masterPassword;
 
     static final Database db = new Database();
-   // static final User u = new User(username, masterPassword);
     
     
     public static void main(String[] args) {
         showFirstMenu();
-        //Database.connection();
 
     }
 
@@ -158,8 +156,11 @@ public class Manager {
                     String oldmp = sc.next();
                     System.out.println("Enter your new master password");
                     String newmp = sc.next();
-                    db.changeMasterPassword(user, oldmp, newmp);
-                    //showMainMenu()
+                    if (db.changeMasterPassword(user, oldmp, newmp)) {
+                        System.out.println("Password Changed");
+                        showMainMenu();
+                    }
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

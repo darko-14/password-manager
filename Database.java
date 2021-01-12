@@ -10,18 +10,18 @@ public class Database{
     mPassword varchar(500) not null, createdAt timestamp default now(), primary key (id));
     3. Create a table for the saved passwords
     create table password_database.passwords (id int unsigned auto_increment not null,username varchar(50) not null unique,
-    adress varchar(100) not null unique,password varchar(500) not null,createdAt timestamp default now(),primary key (id),
+    address varchar(100) not null unique,password varchar(500) not null,createdAt timestamp default now(),primary key (id),
     foreign key (username) references users (username));
     */
 
     final String secretKey = "secretkey";
-
     AES aes = new AES();
+
     public void addNewPassword(String u, String a, String p) {
 
         String hpw = AES.encrypt(p, secretKey);
         
-        String query = "INSERT INTO password_database.passwords (username, adress, password) VALUES ('" + u + "','"+ a + "','"+ hpw +"')";
+        String query = "INSERT INTO password_database.passwords (username, address, password) VALUES ('" + u + "','"+ a + "','"+ hpw +"')";
 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
@@ -35,6 +35,7 @@ public class Database{
             e.printStackTrace();
         }
     }
+
     public String revealPassword(String username, String id){
         String decryptedPass = null; 
         String query = "SELECT * FROM password_database.passwords WHERE username = '"+username+"' AND id = " +id+";";
@@ -53,9 +54,6 @@ public class Database{
         return decryptedPass;
     }
 
-    public static void editPassword() {
-
-    }
     public void showPasswords(String username){
         String query = "SELECT * FROM password_database.passwords WHERE username = '"+username+"';";
 
@@ -64,10 +62,10 @@ public class Database{
             Statement st = con.createStatement();  
             ResultSet rs = st.executeQuery(query);  
             System.out.println("-------------");
-            System.out.println("Saved Passwords");
+            System.out.println("Saved Passwords (id, user, address, password, date)");
             while(rs.next()){
                 
-                System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+" "+rs.getString(5));
+                System.out.println(rs.getString(1)+" | "+rs.getString(2)+" | "+rs.getString(3)+" | "+rs.getString(4)+" | "+rs.getString(5));
                 
             }
 
@@ -136,7 +134,7 @@ public class Database{
             System.out.println("Register successfull!");
             con.close();
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Username already exists!");
         }
     }
@@ -148,8 +146,6 @@ public class Database{
         String newhpw = hashPassword(newPass);
         String query = "UPDATE password_database.users SET mPassword = '"+newhpw+"' WHERE mPassword = '" +oldhpw+"';" ;
                
-        System.out.println(oldhpw);
-        System.out.println(newhpw);
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/password_database?serverTimezone=EST", "root", "darko");
             PreparedStatement st = con.prepareStatement(query);

@@ -86,10 +86,9 @@ public class Manager {
         System.out.println("** Menu **");
         System.out.println("1. Add new password");
         System.out.println("2. Reveal password (id)");
-        System.out.println("3. Edit password (id)");
-        System.out.println("4. Delete password (id)");
-        System.out.println("5. Change your Master Password");
-        System.out.println("6. Logout");
+        System.out.println("3. Delete password (id)");
+        System.out.println("4. Change your Master Password");
+        System.out.println("5. Logout");
 
         int choice = sc.nextInt();
 
@@ -98,13 +97,13 @@ public class Manager {
                 try {
                     System.out.println("Add new password:");
                     System.out.println("----------------");
-                    System.out.println("Enter adress");
-                    String adress = sc.next();
+                    System.out.println("Enter address");
+                    String address = sc.next();
                     System.out.println("Enter password");
                     String password = sc.next();   
                     System.out.println("Added successfull!");
-                    System.out.println(adress +" "+ password);
-                    db.addNewPassword(user, adress, password);
+                    System.out.println(address +" "+ password);
+                    db.addNewPassword(user, address, password);
                     showMainMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -116,27 +115,13 @@ public class Manager {
                     System.out.println("----------------");
                     System.out.println("Enter id");
                     String id = sc.next();
-                    System.out.println(db.revealPassword(user, id));
+                    System.out.println("Password: "+db.revealPassword(user, id));
                     showMainMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case 3:
-                try {
-                    System.out.println("Edit password:");
-                    System.out.println("----------------");
-                    System.out.println("Enter new adress or hit Enter to continue");
-                    String newAdress = sc.next();
-                    System.out.println("Enter new password or hit Enter to continue");
-                    String newPassword = sc.next(); 
-                    //editPassword()
-                    showMainMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 4:
                 try {
                     System.out.println("Delete password:");
                     System.out.println("----------------");
@@ -148,7 +133,7 @@ public class Manager {
                     e.printStackTrace();
                 }
                 break;
-            case 5:
+            case 4:
                 try {
                     System.out.println("Change your master password:");
                     System.out.println("----------------");
@@ -165,7 +150,7 @@ public class Manager {
                     e.printStackTrace();
                 }
                 break;
-            case 6:
+            case 5:
                 try {
                     user = null;
                     showFirstMenu();
